@@ -16,14 +16,12 @@ import { UpdatePriceDto } from './dto/update-price.dto';
 @Controller('prices')
 export class PricesController {
   constructor(private readonly pricesService: PricesService) {}
-  
-  // FIXED ROUTES
+
   @Get('min-recent')
   async getMinRecent(@Query('days') days?: string) {
     return this.pricesService.getMinRecent(Number(days));
   }
 
-  // W/O PARAMS
   @Get()
   async findAll(
     @Query('product_id') product_id?: number,
@@ -45,10 +43,7 @@ export class PricesController {
   }
 
   @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updatePriceDto: UpdatePriceDto,
-  ) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updatePriceDto: UpdatePriceDto) {
     return this.pricesService.update(id, updatePriceDto);
   }
 

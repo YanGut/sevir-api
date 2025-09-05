@@ -29,19 +29,14 @@ export class PricesService {
     return price;
   }
 
-  async findAll(filters?: {
-    product_id?: number;
-    start?: string;
-    end?: string;
-  }) {
+  async findAll(filters?: { product_id?: number; start?: string; end?: string }) {
     const qb = this.priceRepository
       .createQueryBuilder('price')
       .leftJoinAndSelect('price.product', 'product');
 
     if (filters?.product_id)
       qb.andWhere('product.id = :productId', { productId: filters.product_id });
-    if (filters?.start)
-      qb.andWhere('price.date >= :start', { start: filters?.start });
+    if (filters?.start) qb.andWhere('price.date >= :start', { start: filters?.start });
     if (filters?.end) qb.andWhere('price.date <= :end', { end: filters.end });
 
     return qb.getMany();
@@ -73,10 +68,7 @@ export class PricesService {
   async update(id: number, updatePriceDto: UpdatePriceDto) {
     const price = await this.findeOne(id);
 
-    if (
-      updatePriceDto.product_id &&
-      updatePriceDto.product_id !== price.product.id
-    ) {
+    if (updatePriceDto.product_id && updatePriceDto.product_id !== price.product.id) {
       const newProduct = await this.productRepository.findOneBy({
         id: updatePriceDto.product_id,
       });
