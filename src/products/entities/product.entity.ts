@@ -1,13 +1,14 @@
-import { Price } from 'src/prices/entities/price.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Index,
 } from 'typeorm';
+import { Price } from 'src/prices/entities/price.entity';
 
-@Entity('product')
+@Entity({ name: 'products' })
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
@@ -15,11 +16,12 @@ export class Product {
   @Column({ length: 255 })
   name: string;
 
-  @Column({ length: 20, nullable: true })
-  ean?: string;
+  @Index({ unique: true, where: 'ean IS NOT NULL' })
+  @Column({ type: 'varchar', length: 64, nullable: true })
+  ean?: string | null;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
   @OneToMany(() => Price, (price) => price.product)
   prices: Price[];

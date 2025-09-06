@@ -22,10 +22,10 @@ export class ProductsService {
     if (name) {
       return this.productRepository.find({
         where: { name: ILike(`%${name}%`) },
-        order: { created_at: 'DESC' },
+        order: { createdAt: 'DESC' },
       });
     }
-    return this.productRepository.find({ order: { created_at: 'DESC' } });
+    return this.productRepository.find({ order: { createdAt: 'DESC' } });
   }
 
   async create(createProductDto: CreateProductDto) {
