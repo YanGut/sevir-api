@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductsModule } from './products/products.module';
 import { PricesModule } from './prices/prices.module';
 import { DatabaseModule } from './database/database.module';
+import { SeedModule } from './seed/seed.module';
 
 import config from './common/config/config';
 import { LoggingMiddleware } from './common/middlewares/logging.middleware';
@@ -18,6 +19,7 @@ import { LoggingMiddleware } from './common/middlewares/logging.middleware';
     DatabaseModule,
     ProductsModule,
     PricesModule,
+    SeedModule,
   ],
   controllers: [],
   providers: [],

@@ -105,7 +105,7 @@ export class PricesService {
               pr.date AS min_date,
               ROW_NUMBER() OVER (PARTITION BY pr.product_id ORDER BY pr.price::numeric ASC, pr.date ASC) rn
         FROM price pr
-        JOIN product p ON p.id = pr.product_id
+        JOIN products p ON p.id = pr.product_id
         WHERE pr.date >= (current_date - INTERVAL '${d} days')
       ) s
       WHERE s.rn = 1;
