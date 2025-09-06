@@ -19,7 +19,7 @@ export class PricesService {
     private productRepository: Repository<Product>,
   ) {}
 
-  async findeOne(id: number) {
+  async findOne(id: number) {
     const price = await this.priceRepository.findOne({
       where: { id },
       relations: ['product'],
@@ -66,7 +66,7 @@ export class PricesService {
   }
 
   async update(id: number, updatePriceDto: UpdatePriceDto) {
-    const price = await this.findeOne(id);
+    const price = await this.findOne(id);
 
     if (updatePriceDto.product_id && updatePriceDto.product_id !== price.product.id) {
       const newProduct = await this.productRepository.findOneBy({
@@ -90,7 +90,7 @@ export class PricesService {
   }
 
   async remove(id: number) {
-    const price = await this.findeOne(id);
+    const price = await this.findOne(id);
     return this.priceRepository.remove(price);
   }
 

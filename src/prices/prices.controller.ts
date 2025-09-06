@@ -106,7 +106,7 @@ export class PricesController {
   @ApiResponse({ status: 200, description: 'The found price entry.', type: Price })
   @ApiResponse({ status: 404, description: 'Price not found.' })
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.pricesService.findeOne(id);
+    return this.pricesService.findOne(id);
   }
 
   @Patch(':id')
