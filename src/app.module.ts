@@ -1,13 +1,19 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
-import { ProductsModule } from './products/products.module';
-import { PricesModule } from './prices/prices.module';
-import { DatabaseModule } from './database/database.module';
-import { SeedModule } from './seed/seed.module';
+import { DatabaseModule } from './modules/database/database.module';
 
 import config from './common/config/config';
 import { LoggingMiddleware } from './common/middlewares/logging.middleware';
+import { UserModule } from './modules/user/user.module';
+import { UserRoleModule } from './modules/user-role/user-role.module';
+import { DepartmentModule } from './modules/department/department.module';
+import { VolunteerHasDepartmentModule } from './modules/volunteer-has-department/volunteer-has-department.module';
+import { VolunteerStatusModule } from './modules/volunteer_status/volunteer_status.module';
+import { VolunteerModule } from './modules/volunteer/volunteer.module';
+import { GcParticipationTimeModule } from './modules/gc-participation-time/gc-participation-time.module';
+import { AboutYouModule } from './modules/about-you/about-you.module';
+import { FundamentalLineCourseModule } from './modules/fundamental-line-course/fundamental-line-course.module';
 
 @Module({
   imports: [
@@ -17,9 +23,15 @@ import { LoggingMiddleware } from './common/middlewares/logging.middleware';
       load: [config],
     }),
     DatabaseModule,
-    ProductsModule,
-    PricesModule,
-    SeedModule,
+    UserModule,
+    UserRoleModule,
+    DepartmentModule,
+    VolunteerHasDepartmentModule,
+    VolunteerStatusModule,
+    VolunteerModule,
+    GcParticipationTimeModule,
+    AboutYouModule,
+    FundamentalLineCourseModule,
   ],
   controllers: [],
   providers: [],
