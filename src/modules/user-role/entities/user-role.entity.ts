@@ -6,9 +6,6 @@ export class UserRole {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(() => User, (user) => user.role)
-  users: User[];
-
   @Column({ name: 'name', type: 'varchar', length: 100, unique: true })
   name: string;
 
@@ -26,4 +23,7 @@ export class UserRole {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
 }

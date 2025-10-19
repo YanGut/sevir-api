@@ -14,6 +14,7 @@ import { VolunteerModule } from './modules/volunteer/volunteer.module';
 import { GcParticipationTimeModule } from './modules/gc-participation-time/gc-participation-time.module';
 import { AboutYouModule } from './modules/about-you/about-you.module';
 import { FundamentalLineCourseModule } from './modules/fundamental-line-course/fundamental-line-course.module';
+import { PhoneNumberModule } from './modules/phone-number/phone-number.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { FundamentalLineCourseModule } from './modules/fundamental-line-course/f
     GcParticipationTimeModule,
     AboutYouModule,
     FundamentalLineCourseModule,
+    PhoneNumberModule,
   ],
   controllers: [],
   providers: [],

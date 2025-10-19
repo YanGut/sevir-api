@@ -1,5 +1,6 @@
+import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UserRole } from 'src/modules/user-role/entities/user-role.entity';
-import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
+import { Department } from 'src/modules/department/entities/department.entity';
 
 @Entity('user')
 export class User {
@@ -33,4 +34,7 @@ export class User {
   @ManyToOne(() => UserRole, (role) => role.users)
   @JoinColumn({ name: 'role_id' })
   role: UserRole;
+
+  @OneToMany(() => Department, (department) => department.user)
+  departments: Department[];
 }
