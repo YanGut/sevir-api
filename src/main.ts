@@ -6,17 +6,10 @@ import { apiReference } from '@scalar/nestjs-api-reference';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-import { ResponseInterceptor } from './common/interceptors/response.interceptor';
-import { SeedService } from './seed/seed.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-
-  if (configService.get<string>('runSeed') === 'true') {
-    const seedService = app.get(SeedService);
-    await seedService.run();
-  }
 
   app.setGlobalPrefix('api');
 
@@ -52,7 +45,6 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new ResponseInterceptor());
 
   await app.listen(process.env.API_PORT ?? 3000);
 }
