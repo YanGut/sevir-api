@@ -10,6 +10,10 @@ export default () => ({
     },
     synchronize: process.env.DATABASE_SYNCHRONIZE,
   },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
+  },
   cors: { origin: process.env.CORS_ORIGIN || '*' },
   environment: process.env.NODE_ENV,
   runSeed: process.env.RUN_SEED,

@@ -1,5 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 import { DatabaseModule } from './modules/database/database.module';
 
@@ -15,6 +16,7 @@ import { GcParticipationTimeModule } from './modules/gc-participation-time/gc-pa
 import { AboutYouModule } from './modules/about-you/about-you.module';
 import { FundamentalLineCourseModule } from './modules/fundamental-line-course/fundamental-line-course.module';
 import { PhoneNumberModule } from './modules/phone-number/phone-number.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +24,15 @@ import { PhoneNumberModule } from './modules/phone-number/phone-number.module';
       isGlobal: true,
       cache: true,
       load: [config],
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      global: true,
+      useFactory: async (configService: ConfigService) => {
+        const secret = await Promise.resolve(configService.get<string>('jwt.secret'));
+        return { secret };
+      },
     }),
     DatabaseModule,
     UserModule,
@@ -34,6 +45,7 @@ import { PhoneNumberModule } from './modules/phone-number/phone-number.module';
     AboutYouModule,
     FundamentalLineCourseModule,
     PhoneNumberModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
