@@ -23,7 +23,10 @@ export class VolunteerHasDepartmentController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVolunteerHasDepartmentDto: UpdateVolunteerHasDepartmentDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateVolunteerHasDepartmentDto: UpdateVolunteerHasDepartmentDto,
+  ) {
     return this.volunteerHasDepartmentService.update(+id, updateVolunteerHasDepartmentDto);
   }
 

@@ -23,7 +23,10 @@ export class GcParticipationTimeController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGcParticipationTimeDto: UpdateGcParticipationTimeDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateGcParticipationTimeDto: UpdateGcParticipationTimeDto,
+  ) {
     return this.gcParticipationTimeService.update(+id, updateGcParticipationTimeDto);
   }
 

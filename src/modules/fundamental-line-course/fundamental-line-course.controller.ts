@@ -23,7 +23,10 @@ export class FundamentalLineCourseController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto,
+  ) {
     return this.fundamentalLineCourseService.update(+id, updateFundamentalLineCourseDto);
   }
 
