@@ -18,6 +18,7 @@ import { FundamentalLineCourseModule } from './modules/fundamental-line-course/f
 import { PhoneNumberModule } from './modules/phone-number/phone-number.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { VolunteerStatusModule } from './modules/volunteer-status/volunteer-status.module';
+import { SeederModule } from './modules/seeder/seeder.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { VolunteerStatusModule } from './modules/volunteer-status/volunteer-stat
       },
     }),
     DatabaseModule,
+    SeederModule,
     UserModule,
     UserRoleModule,
     DepartmentModule,
