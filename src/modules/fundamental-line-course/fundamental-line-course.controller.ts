@@ -19,7 +19,7 @@ export class FundamentalLineCourseController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.fundamentalLineCourseService.findOne(+id);
+    return this.fundamentalLineCourseService.findOne(id);
   }
 
   @Patch(':id')
@@ -27,11 +27,11 @@ export class FundamentalLineCourseController {
     @Param('id') id: string,
     @Body() updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto,
   ) {
-    return this.fundamentalLineCourseService.update(+id, updateFundamentalLineCourseDto);
+    return this.fundamentalLineCourseService.update(id, updateFundamentalLineCourseDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.fundamentalLineCourseService.remove(+id);
+    return this.fundamentalLineCourseService.remove(id);
   }
 }

@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([FundamentalLineCourse])],
   controllers: [FundamentalLineCourseController],
   providers: [FundamentalLineCourseService],
+  exports: [FundamentalLineCourseService],
 })
 export class FundamentalLineCourseModule {}

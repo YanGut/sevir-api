@@ -1,26 +1,62 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateFundamentalLineCourseDto } from './dto/create-fundamental-line-course.dto';
 import { UpdateFundamentalLineCourseDto } from './dto/update-fundamental-line-course.dto';
+import { FundamentalLineCourse } from './entities/fundamental-line-course.entity';
 
 @Injectable()
 export class FundamentalLineCourseService {
-  create(createFundamentalLineCourseDto: CreateFundamentalLineCourseDto) {
-    return 'This action adds a new fundamentalLineCourse';
+  constructor(
+    @InjectRepository(FundamentalLineCourse)
+    private readonly fundamentalLineCourseRepository: Repository<FundamentalLineCourse>,
+  ) {}
+
+  create(
+    createFundamentalLineCourseDto: CreateFundamentalLineCourseDto,
+  ): Promise<FundamentalLineCourse> {
+    const fundamentalLineCourse = this.fundamentalLineCourseRepository.create(
+      createFundamentalLineCourseDto,
+    );
+    return this.fundamentalLineCourseRepository.save(fundamentalLineCourse);
   }
 
-  findAll() {
-    return `This action returns all fundamentalLineCourse`;
+  findAll(): Promise<FundamentalLineCourse[]> {
+    return this.fundamentalLineCourseRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fundamentalLineCourse`;
+  findOne(id: string): Promise<FundamentalLineCourse | null> {
+    return this.fundamentalLineCourseRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto) {
-    return `This action updates a #${id} fundamentalLineCourse`;
+  async findOneByName(name: string): Promise<FundamentalLineCourse | null> {
+    return await this.fundamentalLineCourseRepository.findOne({
+      where: {
+        name: name,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} fundamentalLineCourse`;
+  update(id: string, updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto) {
+    return this.fundamentalLineCourseRepository.update(id, updateFundamentalLineCourseDto);
+  }
+
+  remove(id: string) {
+    return this.fundamentalLineCourseRepository.delete(id);
+  }
+
+  async seed(): Promise<void> {
+    const fundamentalLineCourseToSeed = [
+      'Estou finalizando um neste momento',
+      'Não, mas pretendo me inscrever na próxima',
+      'Não tenho conhecimento sobre os cursos',
+    ];
+
+    for (const name of fundamentalLineCourseToSeed) {
+      const existing = await this.findOneByName(name);
+      if (!existing) {
+        await this.create({ name });
+      }
+    }
   }
 }
