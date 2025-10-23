@@ -10,13 +10,14 @@ import { UserModule } from './modules/user/user.module';
 import { UserRoleModule } from './modules/user-role/user-role.module';
 import { DepartmentModule } from './modules/department/department.module';
 import { VolunteerHasDepartmentModule } from './modules/volunteer-has-department/volunteer-has-department.module';
-import { VolunteerStatusModule } from './modules/volunteer_status/volunteer_status.module';
+
 import { VolunteerModule } from './modules/volunteer/volunteer.module';
 import { GcParticipationTimeModule } from './modules/gc-participation-time/gc-participation-time.module';
 import { AboutYouModule } from './modules/about-you/about-you.module';
 import { FundamentalLineCourseModule } from './modules/fundamental-line-course/fundamental-line-course.module';
 import { PhoneNumberModule } from './modules/phone-number/phone-number.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { VolunteerStatusModule } from './modules/volunteer-status/volunteer-status.module';
 
 @Module({
   imports: [

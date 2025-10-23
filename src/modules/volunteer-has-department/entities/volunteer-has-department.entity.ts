@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Volunteer } from 'src/modules/volunteer/entities/volunteer.entity';
 import { Department } from 'src/modules/department/entities/department.entity';
-import { VolunteerStatus } from 'src/modules/volunteer_status/entities/volunteer_status.entity';
+import { VolunteerStatus } from 'src/modules/volunteer-status/entities/volunteer-status.entity';
 
 @Entity('volunteer_has_department')
 export class VolunteerHasDepartment {
