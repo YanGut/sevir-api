@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         password: configService.get<string>('database.postgres.password', '12345678'),
         database: configService.get<string>('database.postgres.database', 'servir_mais_db'),
         synchronize: configService.get<boolean>('database.synchronize', true),
-        dropSchema: configService.get<string>('environment') !== 'production',
+        dropSchema: configService.get<string>('environment', 'production') !== 'production',
         autoLoadEntities: true,
         logging: ['error'],
       }),
