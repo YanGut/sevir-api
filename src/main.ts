@@ -14,8 +14,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('InfoMarket API')
-    .setDescription('API para consulta de preços de produtos de supermercado.')
+    .setTitle('Servir Mais API')
+    .setDescription('API para cadastro de voluntários para a plataforma Servir Mais.')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
@@ -30,7 +30,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: configService.get('cors.origin') || '*',
+    origin: configService.get<string>('cors.origin') || '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization',
   });
