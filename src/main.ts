@@ -17,6 +17,9 @@ async function bootstrap() {
     .setTitle('Servir Mais API')
     .setDescription('API para cadastro de voluntários para a plataforma Servir Mais.')
     .setVersion('1.0')
+    .addBearerAuth()
+    .addBasicAuth()
+    .addOAuth2()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
