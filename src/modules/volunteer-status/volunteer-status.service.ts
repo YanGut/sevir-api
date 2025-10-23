@@ -1,26 +1,68 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateVolunteerStatusDto } from './dto/create-volunteer-status.dto';
 import { UpdateVolunteerStatusDto } from './dto/update-volunteer-status.dto';
+import { VolunteerStatus } from './entities/volunteer-status.entity';
 
 @Injectable()
 export class VolunteerStatusService {
-  create(createVolunteerStatusDto: CreateVolunteerStatusDto) {
-    return 'This action adds a new volunteerStatus';
+  constructor(
+    @InjectRepository(VolunteerStatus)
+    private readonly volunteerStatusRepository: Repository<VolunteerStatus>,
+  ) {}
+
+  create(createVolunteerStatusDto: CreateVolunteerStatusDto): Promise<VolunteerStatus> {
+    const volunteerStatus = this.volunteerStatusRepository.create(createVolunteerStatusDto);
+    return this.volunteerStatusRepository.save(volunteerStatus);
   }
 
-  findAll() {
-    return `This action returns all volunteerStatus`;
+  findAll(): Promise<VolunteerStatus[]> {
+    return this.volunteerStatusRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} volunteerStatus`;
+  findOne(id: string): Promise<VolunteerStatus | null> {
+    return this.volunteerStatusRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateVolunteerStatusDto: UpdateVolunteerStatusDto) {
-    return `This action updates a #${id} volunteerStatus`;
+  async findOneByName(name: string): Promise<VolunteerStatus | null> {
+    return await this.volunteerStatusRepository.findOne({
+      where: {
+        name: name,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} volunteerStatus`;
+  update(id: string, updateVolunteerStatusDto: UpdateVolunteerStatusDto) {
+    return this.volunteerStatusRepository.update(id, updateVolunteerStatusDto);
+  }
+
+  remove(id: string) {
+    return this.volunteerStatusRepository.delete(id);
+  }
+
+  async seed(): Promise<void> {
+    const volunteerStatusToSeed = [
+      'Lider de GC contactado',
+      'Lider de GC não respondeu contato',
+      'Lider de GC aprovou voluntário',
+      'Lider de GC reprovou voluntário',
+      'Voluntário contactado',
+      'Voluntário não respondeu contato',
+      'Voluntário desistiu de servir',
+      'Entrevista marcada',
+      'Aprovado na entrevista',
+      'Reprovado na entrevista',
+      'Iniciou o servir',
+      'Entrou oficialmente no time',
+      'Impedido',
+    ];
+
+    for (const name of volunteerStatusToSeed) {
+      const existing = await this.findOneByName(name);
+      if (!existing) {
+        await this.create({ name });
+      }
+    }
   }
 }

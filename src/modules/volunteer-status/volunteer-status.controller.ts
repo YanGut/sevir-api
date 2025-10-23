@@ -19,16 +19,16 @@ export class VolunteerStatusController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.volunteerStatusService.findOne(+id);
+    return this.volunteerStatusService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateVolunteerStatusDto: UpdateVolunteerStatusDto) {
-    return this.volunteerStatusService.update(+id, updateVolunteerStatusDto);
+    return this.volunteerStatusService.update(id, updateVolunteerStatusDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.volunteerStatusService.remove(+id);
+    return this.volunteerStatusService.remove(id);
   }
 }

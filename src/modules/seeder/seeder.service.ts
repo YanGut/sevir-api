@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { UserRoleService } from '../user-role/user-role.service';
 import { FundamentalLineCourseService } from '../fundamental-line-course/fundamental-line-course.service';
 import { GcParticipationTimeService } from '../gc-participation-time/gc-participation-time.service';
+import { VolunteerStatusService } from '../volunteer-status/volunteer-status.service';
 
 @Injectable()
 export class SeederService implements OnModuleInit {
@@ -11,6 +12,7 @@ export class SeederService implements OnModuleInit {
     private readonly userRoleService: UserRoleService,
     private readonly fundamentalLineCourseService: FundamentalLineCourseService,
     private readonly gcParticipationTimeService: GcParticipationTimeService,
+    private readonly volunteerStatusService: VolunteerStatusService,
   ) {}
 
   async onModuleInit() {
@@ -24,5 +26,6 @@ export class SeederService implements OnModuleInit {
     await this.userRoleService.seed();
     await this.fundamentalLineCourseService.seed();
     await this.gcParticipationTimeService.seed();
+    await this.volunteerStatusService.seed();
   }
 }
