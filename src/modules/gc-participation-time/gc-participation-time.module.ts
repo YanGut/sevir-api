@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([GcParticipationTime])],
   controllers: [GcParticipationTimeController],
   providers: [GcParticipationTimeService],
+  exports: [GcParticipationTimeService],
 })
 export class GcParticipationTimeModule {}

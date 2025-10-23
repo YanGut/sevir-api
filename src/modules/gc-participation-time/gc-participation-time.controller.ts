@@ -19,7 +19,7 @@ export class GcParticipationTimeController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.gcParticipationTimeService.findOne(+id);
+    return this.gcParticipationTimeService.findOne(id);
   }
 
   @Patch(':id')
@@ -27,11 +27,11 @@ export class GcParticipationTimeController {
     @Param('id') id: string,
     @Body() updateGcParticipationTimeDto: UpdateGcParticipationTimeDto,
   ) {
-    return this.gcParticipationTimeService.update(+id, updateGcParticipationTimeDto);
+    return this.gcParticipationTimeService.update(id, updateGcParticipationTimeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.gcParticipationTimeService.remove(+id);
+    return this.gcParticipationTimeService.remove(id);
   }
 }

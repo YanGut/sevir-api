@@ -1,26 +1,60 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateGcParticipationTimeDto } from './dto/create-gc-participation-time.dto';
 import { UpdateGcParticipationTimeDto } from './dto/update-gc-participation-time.dto';
+import { GcParticipationTime } from './entities/gc-participation-time.entity';
 
 @Injectable()
 export class GcParticipationTimeService {
-  create(createGcParticipationTimeDto: CreateGcParticipationTimeDto) {
-    return 'This action adds a new gcParticipationTime';
+  constructor(
+    @InjectRepository(GcParticipationTime)
+    private readonly gcParticipationTimeRepository: Repository<GcParticipationTime>,
+  ) {}
+
+  create(createGcParticipationTimeDto: CreateGcParticipationTimeDto): Promise<GcParticipationTime> {
+    const gcParticipationTime = this.gcParticipationTimeRepository.create(
+      createGcParticipationTimeDto,
+    );
+    return this.gcParticipationTimeRepository.save(gcParticipationTime);
   }
 
-  findAll() {
-    return `This action returns all gcParticipationTime`;
+  findAll(): Promise<GcParticipationTime[]> {
+    return this.gcParticipationTimeRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} gcParticipationTime`;
+  findOne(id: string): Promise<GcParticipationTime | null> {
+    return this.gcParticipationTimeRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateGcParticipationTimeDto: UpdateGcParticipationTimeDto) {
-    return `This action updates a #${id} gcParticipationTime`;
+  async findOneByName(name: string): Promise<GcParticipationTime | null> {
+    return await this.gcParticipationTimeRepository.findOne({
+      where: {
+        name: name,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} gcParticipationTime`;
+  update(id: string, updateGcParticipationTimeDto: UpdateGcParticipationTimeDto) {
+    return this.gcParticipationTimeRepository.update(id, updateGcParticipationTimeDto);
+  }
+
+  remove(id: string) {
+    return this.gcParticipationTimeRepository.delete(id);
+  }
+
+  async seed(): Promise<void> {
+    const gcParticipationTimeToSeed = [
+      'Sim, sou batizado',
+      'Não, ainda não me batizei',
+      'Estou inscrito para o próximo batismo',
+    ];
+
+    for (const name of gcParticipationTimeToSeed) {
+      const existing = await this.findOneByName(name);
+      if (!existing) {
+        await this.create({ name });
+      }
+    }
   }
 }
