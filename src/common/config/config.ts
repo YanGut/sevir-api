@@ -14,6 +14,10 @@ export default () => ({
     secret: process.env.JWT_SECRET,
     accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
   },
+  admin: {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+  },
   cors: { origin: process.env.CORS_ORIGIN || '*' },
   environment: process.env.NODE_ENV,
   runSeed: process.env.RUN_SEED,
