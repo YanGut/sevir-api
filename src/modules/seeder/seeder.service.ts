@@ -4,6 +4,7 @@ import { UserRoleService } from '../user-role/user-role.service';
 import { FundamentalLineCourseService } from '../fundamental-line-course/fundamental-line-course.service';
 import { GcParticipationTimeService } from '../gc-participation-time/gc-participation-time.service';
 import { VolunteerStatusService } from '../volunteer-status/volunteer-status.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class SeederService implements OnModuleInit {
@@ -13,11 +14,12 @@ export class SeederService implements OnModuleInit {
     private readonly fundamentalLineCourseService: FundamentalLineCourseService,
     private readonly gcParticipationTimeService: GcParticipationTimeService,
     private readonly volunteerStatusService: VolunteerStatusService,
+    private readonly userService: UserService,
   ) {}
 
   async onModuleInit() {
-    const runSeed = this.configService.get<boolean>('runSeed');
-    if (runSeed) {
+    const runSeed = this.configService.get<string>('runSeed');
+    if (runSeed === 'true') {
       await this.seed();
     }
   }
@@ -27,5 +29,6 @@ export class SeederService implements OnModuleInit {
     await this.fundamentalLineCourseService.seed();
     await this.gcParticipationTimeService.seed();
     await this.volunteerStatusService.seed();
+    await this.userService.seed();
   }
 }

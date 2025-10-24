@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { FundamentalLineCourseModule } from '../fundamental-line-course/fundamental-line-course.module';
 import { GcParticipationTimeModule } from '../gc-participation-time/gc-participation-time.module';
 import { VolunteerStatusModule } from '../volunteer-status/volunteer-status.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { VolunteerStatusModule } from '../volunteer-status/volunteer-status.modu
     FundamentalLineCourseModule,
     GcParticipationTimeModule,
     VolunteerStatusModule,
+    UserModule,
   ],
   providers: [SeederService],
 })
