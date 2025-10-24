@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreatePhoneNumberDto } from './dto/create-phone-number.dto';
 import { UpdatePhoneNumberDto } from './dto/update-phone-number.dto';
+import { PhoneNumber } from './entities/phone-number.entity';
 
 @Injectable()
 export class PhoneNumberService {
-  create(createPhoneNumberDto: CreatePhoneNumberDto) {
-    return 'This action adds a new phoneNumber';
+  constructor(
+    @InjectRepository(PhoneNumber)
+    private readonly phoneNumberRepository: Repository<PhoneNumber>,
+  ) {}
+
+  async create(createPhoneNumberDto: CreatePhoneNumberDto): Promise<PhoneNumber> {
+    const phoneNumber = this.phoneNumberRepository.create(createPhoneNumberDto);
+    return this.phoneNumberRepository.save(phoneNumber);
   }
 
-  findAll() {
-    return `This action returns all phoneNumber`;
+  async findAll(): Promise<PhoneNumber[]> {
+    return this.phoneNumberRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} phoneNumber`;
+  async findOne(id: string): Promise<PhoneNumber> {
+    const phoneNumber = await this.phoneNumberRepository.findOne({ where: { id } });
+    if (!phoneNumber) {
+      throw new NotFoundException(`Phone number with ID "${id}" not found`);
+    }
+    return phoneNumber;
   }
 
-  update(id: number, updatePhoneNumberDto: UpdatePhoneNumberDto) {
-    return `This action updates a #${id} phoneNumber`;
+  async update(id: string, updatePhoneNumberDto: UpdatePhoneNumberDto): Promise<PhoneNumber> {
+    const phoneNumber = await this.phoneNumberRepository.preload({
+      id,
+      ...updatePhoneNumberDto,
+    });
+    if (!phoneNumber) {
+      throw new NotFoundException(`Phone number with ID "${id}" not found`);
+    }
+    return this.phoneNumberRepository.save(phoneNumber);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} phoneNumber`;
+  async remove(id: string): Promise<void> {
+    const phoneNumber = await this.findOne(id);
+    await this.phoneNumberRepository.remove(phoneNumber);
   }
 }
