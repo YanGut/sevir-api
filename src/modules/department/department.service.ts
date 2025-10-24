@@ -5,15 +5,29 @@ import { Repository } from 'typeorm';
 import { Department } from './entities/department.entity';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { RequestWithUserInfo } from 'src/common/types/request-with-user-info.type';
+import { User } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class DepartmentService {
   constructor(
     @InjectRepository(Department)
     private readonly departmentRepository: Repository<Department>,
+    private readonly userService: UserService,
   ) {}
 
-  async create(createDepartmentDto: CreateDepartmentDto): Promise<Department> {
+  async create(
+    createDepartmentDto: CreateDepartmentDto,
+    req: RequestWithUserInfo,
+  ): Promise<Department> {
+    if (!req.userId) throw new Error('Unauthorized: User ID not found in request');
+    const user: User | null = await this.userService.findById(req.userId);
+    if (!user) throw new Error('Unauthorized: User not found');
+
+    if (user.role.name.toLowerCase() !== 'admin')
+      throw new Error('Unauthorized: Only admins can create departments');
+
     const newDepartment: Department = this.departmentRepository.create(createDepartmentDto);
     return await this.departmentRepository.save(newDepartment);
   }
