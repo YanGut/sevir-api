@@ -25,10 +25,12 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { userId: user.id };
+    const payload = {
+      userId: user.id,
+    };
 
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };
   }
 }
