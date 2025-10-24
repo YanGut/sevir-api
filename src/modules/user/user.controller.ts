@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from 'src/common/guards/auth.guard';
@@ -18,5 +18,11 @@ export class UserController {
   @UseGuards(AuthGuard)
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Get(':id')
+  @UseGuards(AuthGuard)
+  findOne(@Param('id') id: string) {
+    return this.userService.findById(id);
   }
 }

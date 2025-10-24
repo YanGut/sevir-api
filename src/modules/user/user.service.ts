@@ -35,8 +35,18 @@ export class UserService {
     return this.userRepository.find();
   }
 
+  async findById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['role'],
+    });
+  }
+
   async findByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { email } });
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['role'],
+    });
   }
 
   async seed(): Promise<void> {
