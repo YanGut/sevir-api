@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { GcParticipationTimeService } from './gc-participation-time.service';
 import { CreateGcParticipationTimeDto } from './dto/create-gc-participation-time.dto';
 import { UpdateGcParticipationTimeDto } from './dto/update-gc-participation-time.dto';
@@ -18,20 +18,20 @@ export class GcParticipationTimeController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.gcParticipationTimeService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateGcParticipationTimeDto: UpdateGcParticipationTimeDto,
   ) {
     return this.gcParticipationTimeService.update(id, updateGcParticipationTimeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.gcParticipationTimeService.remove(id);
   }
 }

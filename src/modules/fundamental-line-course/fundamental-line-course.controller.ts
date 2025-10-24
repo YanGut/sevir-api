@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { FundamentalLineCourseService } from './fundamental-line-course.service';
 import { CreateFundamentalLineCourseDto } from './dto/create-fundamental-line-course.dto';
 import { UpdateFundamentalLineCourseDto } from './dto/update-fundamental-line-course.dto';
@@ -18,20 +18,20 @@ export class FundamentalLineCourseController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.fundamentalLineCourseService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto,
   ) {
     return this.fundamentalLineCourseService.update(id, updateFundamentalLineCourseDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.fundamentalLineCourseService.remove(id);
   }
 }
