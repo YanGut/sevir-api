@@ -55,7 +55,14 @@ export class DepartmentService {
     });
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string, req: RequestWithUserInfo): Promise<void> {
+    if (!req.userId) throw new Error('Unauthorized: User ID not found in request');
+    const user: User | null = await this.userService.findById(req.userId);
+    if (!user) throw new Error('Unauthorized: User not found');
+
+    if (user.role.name.toLowerCase() !== 'admin')
+      throw new Error('Unauthorized: Only admins can delete departments');
+
     await this.departmentRepository.delete(id);
   }
 

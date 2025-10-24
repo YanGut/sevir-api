@@ -31,7 +31,8 @@ export class DepartmentController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.departmentService.remove(id);
+  @UseGuards(AuthGuard)
+  remove(@Param('id') id: string, @Req() req: RequestWithUserInfo) {
+    return this.departmentService.remove(id, req);
   }
 }
