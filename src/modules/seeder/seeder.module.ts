@@ -6,6 +6,7 @@ import { FundamentalLineCourseModule } from '../fundamental-line-course/fundamen
 import { GcParticipationTimeModule } from '../gc-participation-time/gc-participation-time.module';
 import { VolunteerStatusModule } from '../volunteer-status/volunteer-status.module';
 import { UserModule } from '../user/user.module';
+import { DepartmentModule } from '../department/department.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UserModule } from '../user/user.module';
     GcParticipationTimeModule,
     VolunteerStatusModule,
     UserModule,
+    DepartmentModule,
   ],
   providers: [SeederService],
 })

@@ -1,26 +1,137 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { Department } from './entities/department.entity';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @Injectable()
 export class DepartmentService {
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
+  constructor(
+    @InjectRepository(Department)
+    private readonly departmentRepository: Repository<Department>,
+  ) {}
+
+  async create(createDepartmentDto: CreateDepartmentDto): Promise<Department> {
+    const newDepartment: Department = this.departmentRepository.create(createDepartmentDto);
+    return await this.departmentRepository.save(newDepartment);
   }
 
-  findAll() {
-    return `This action returns all department`;
+  async findAll(): Promise<Department[]> {
+    return await this.departmentRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} department`;
+  async findOne(id: string): Promise<Department | null> {
+    return await this.departmentRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
+  async findOneByName(name: string): Promise<Department | null> {
+    return await this.departmentRepository.findOne({
+      where: { name },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} department`;
+  async update(id: string, updateDepartmentDto: UpdateDepartmentDto): Promise<Department | null> {
+    await this.departmentRepository.update(id, updateDepartmentDto);
+    return await this.departmentRepository.findOne({
+      where: { id },
+    });
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.departmentRepository.delete(id);
+  }
+
+  async seed(): Promise<void> {
+    const departmentsData: CreateDepartmentDto[] = [
+      {
+        name: 'Ninho (bebês de 3 meses a 1 ano e 11 meses)',
+        active: true,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Arca (crianças de 2 e 3 anos)',
+        active: true,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Reino (crianças de 4 e 5 anos)',
+        active: true,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Safari (crianças de 6 a 7 anos)',
+        active: true,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Connect (crianças de 8 a 11 anos)',
+        active: true,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Check in',
+        active: false,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Produção',
+        active: false,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Estação brincar',
+        active: false,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Estação oficinas',
+        active: false,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Estação culto',
+        active: false,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Eventos',
+        active: false,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Boas vindas',
+        active: false,
+        inRequestQEOne: false,
+        inRequestQETwo: false,
+      },
+      {
+        name: 'Farol (departamento para inclusão de crianças atípicas)',
+        active: true,
+        inRequestQEOne: true,
+        inRequestQETwo: true,
+      },
+    ];
+
+    for (const department of departmentsData) {
+      const departmentExists: Department | null = await this.findOneByName(department.name);
+      if (departmentExists) continue;
+      const newDepartment: Department = this.departmentRepository.create(department);
+      await this.departmentRepository.save(newDepartment);
+    }
   }
 }

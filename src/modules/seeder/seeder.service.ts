@@ -5,6 +5,7 @@ import { FundamentalLineCourseService } from '../fundamental-line-course/fundame
 import { GcParticipationTimeService } from '../gc-participation-time/gc-participation-time.service';
 import { VolunteerStatusService } from '../volunteer-status/volunteer-status.service';
 import { UserService } from '../user/user.service';
+import { DepartmentService } from '../department/department.service';
 
 @Injectable()
 export class SeederService implements OnModuleInit {
@@ -15,6 +16,7 @@ export class SeederService implements OnModuleInit {
     private readonly gcParticipationTimeService: GcParticipationTimeService,
     private readonly volunteerStatusService: VolunteerStatusService,
     private readonly userService: UserService,
+    private readonly departmentService: DepartmentService,
   ) {}
 
   async onModuleInit() {
@@ -30,5 +32,6 @@ export class SeederService implements OnModuleInit {
     await this.gcParticipationTimeService.seed();
     await this.volunteerStatusService.seed();
     await this.userService.seed();
+    await this.departmentService.seed();
   }
 }
