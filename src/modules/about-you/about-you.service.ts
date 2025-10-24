@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAboutYouDto } from './dto/create-about-you.dto';
 import { UpdateAboutYouDto } from './dto/update-about-you.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AboutYou } from './entities/about-you.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AboutYouService {
-  create(createAboutYouDto: CreateAboutYouDto) {
-    return 'This action adds a new aboutYou';
+  constructor(
+    @InjectRepository(AboutYou)
+    private readonly aboutYouRepository: Repository<AboutYou>,
+  ) {}
+
+  async create(createAboutYouDto: CreateAboutYouDto): Promise<AboutYou> {
+    const aboutYou = this.aboutYouRepository.create(createAboutYouDto);
+    return this.aboutYouRepository.save(aboutYou);
   }
 
-  findAll() {
-    return `This action returns all aboutYou`;
+  async findAll(): Promise<AboutYou[]> {
+    return this.aboutYouRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} aboutYou`;
+  async findOne(id: string): Promise<AboutYou> {
+    const aboutYou = await this.aboutYouRepository.findOne({ where: { id } });
+    if (!aboutYou) {
+      throw new NotFoundException(`AboutYou with ID "${id}" not found`);
+    }
+    return aboutYou;
   }
 
-  update(id: number, updateAboutYouDto: UpdateAboutYouDto) {
-    return `This action updates a #${id} aboutYou`;
+  async update(id: string, updateAboutYouDto: UpdateAboutYouDto): Promise<AboutYou> {
+    const aboutYou = await this.aboutYouRepository.preload({
+      id,
+      ...updateAboutYouDto,
+    });
+    if (!aboutYou) {
+      throw new NotFoundException(`AboutYou with ID "${id}" not found`);
+    }
+    return this.aboutYouRepository.save(aboutYou);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} aboutYou`;
+  async remove(id: string): Promise<void> {
+    const aboutYou = await this.findOne(id);
+    await this.aboutYouRepository.remove(aboutYou);
   }
 }
