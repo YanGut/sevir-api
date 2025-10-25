@@ -1,32 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFundamentalLineCourseDto } from './dto/create-fundamental-line-course.dto';
 import { UpdateFundamentalLineCourseDto } from './dto/update-fundamental-line-course.dto';
 import { FundamentalLineCourse } from './entities/fundamental-line-course.entity';
+import { UserService } from 'src/modules/user/user.service';
 
 @Injectable()
 export class FundamentalLineCourseService {
   constructor(
     @InjectRepository(FundamentalLineCourse)
     private readonly fundamentalLineCourseRepository: Repository<FundamentalLineCourse>,
+    private readonly userService: UserService,
   ) {}
 
-  create(
+  async create(
     createFundamentalLineCourseDto: CreateFundamentalLineCourseDto,
   ): Promise<FundamentalLineCourse> {
     const fundamentalLineCourse = this.fundamentalLineCourseRepository.create(
       createFundamentalLineCourseDto,
     );
-    return this.fundamentalLineCourseRepository.save(fundamentalLineCourse);
+    return await this.fundamentalLineCourseRepository.save(fundamentalLineCourse);
   }
 
-  findAll(): Promise<FundamentalLineCourse[]> {
-    return this.fundamentalLineCourseRepository.find();
+  async findAll(): Promise<FundamentalLineCourse[]> {
+    return await this.fundamentalLineCourseRepository.find();
   }
 
-  findOne(id: string): Promise<FundamentalLineCourse | null> {
-    return this.fundamentalLineCourseRepository.findOne({ where: { id } });
+  async findOne(id: string): Promise<FundamentalLineCourse | null> {
+    return await this.fundamentalLineCourseRepository.findOne({ where: { id } });
   }
 
   async findOneByName(name: string): Promise<FundamentalLineCourse | null> {
@@ -37,12 +39,24 @@ export class FundamentalLineCourseService {
     });
   }
 
-  update(id: string, updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto) {
-    return this.fundamentalLineCourseRepository.update(id, updateFundamentalLineCourseDto);
+  async update(
+    id: string,
+    updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto,
+  ): Promise<FundamentalLineCourse> {
+    const fundamentalLineCourse: FundamentalLineCourse | undefined =
+      await this.fundamentalLineCourseRepository.preload({
+        id: id,
+        ...updateFundamentalLineCourseDto,
+      });
+
+    if (!fundamentalLineCourse)
+      throw new NotFoundException(`Fundamental Line Course, with id: ${id} not found`);
+
+    return await this.fundamentalLineCourseRepository.save(fundamentalLineCourse);
   }
 
-  remove(id: string) {
-    return this.fundamentalLineCourseRepository.delete(id);
+  async remove(id: string) {
+    return await this.fundamentalLineCourseRepository.delete(id);
   }
 
   async seed(): Promise<void> {

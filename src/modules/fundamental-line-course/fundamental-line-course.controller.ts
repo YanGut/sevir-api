@@ -1,7 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { FundamentalLineCourseService } from './fundamental-line-course.service';
 import { CreateFundamentalLineCourseDto } from './dto/create-fundamental-line-course.dto';
 import { UpdateFundamentalLineCourseDto } from './dto/update-fundamental-line-course.dto';
+
+import { AdminGuard } from 'src/common/guards/admin.guard';
 
 @Controller('fundamental-line-course')
 export class FundamentalLineCourseController {
@@ -23,6 +35,7 @@ export class FundamentalLineCourseController {
   }
 
   @Patch(':id')
+  @UseGuards(AdminGuard)
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateFundamentalLineCourseDto: UpdateFundamentalLineCourseDto,
@@ -31,6 +44,7 @@ export class FundamentalLineCourseController {
   }
 
   @Delete(':id')
+  @UseGuards(AdminGuard)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.fundamentalLineCourseService.remove(id);
   }
