@@ -25,19 +25,14 @@ export class VolunteerHasDepartmentService {
     const { volunteerId, departmentId, volunteerStatusId } = createVolunteerHasDepartmentDto;
 
     const volunteer = await this.volunteerService.findOne(volunteerId);
-    if (!volunteer) {
-      throw new NotFoundException(`Volunteer with ID "${volunteerId}" not found`);
-    }
+    if (!volunteer) throw new NotFoundException(`Volunteer with ID "${volunteerId}" not found`);
 
     const department = await this.departmentService.findOne(departmentId);
-    if (!department) {
-      throw new NotFoundException(`Department with ID "${departmentId}" not found`);
-    }
+    if (!department) throw new NotFoundException(`Department with ID "${departmentId}" not found`);
 
     const volunteerStatus = await this.volunteerStatusService.findOne(volunteerStatusId);
-    if (!volunteerStatus) {
+    if (!volunteerStatus)
       throw new NotFoundException(`VolunteerStatus with ID "${volunteerStatusId}" not found`);
-    }
 
     const volunteerHasDepartment = this.volunteerHasDepartmentRepository.create({
       volunteer,
@@ -79,21 +74,16 @@ export class VolunteerHasDepartmentService {
     if (!volunteer) throw new NotFoundException(`Volunteer with ID "${volunteerId}" not found`);
     updatePayload.volunteer = volunteer;
 
-    if (departmentId) {
-      const department = await this.departmentService.findOne(departmentId);
-      if (!department) {
-        throw new NotFoundException(`Department with ID "${departmentId}" not found`);
-      }
-      updatePayload.department = department;
-    }
+    if (!departmentId) throw new NotFoundException(`DepartmentId is required for update`);
+    const department = await this.departmentService.findOne(departmentId);
+    if (!department) throw new NotFoundException(`Department with ID "${departmentId}" not found`);
+    updatePayload.department = department;
 
-    if (volunteerStatusId) {
-      const volunteerStatus = await this.volunteerStatusService.findOne(volunteerStatusId);
-      if (!volunteerStatus) {
-        throw new NotFoundException(`VolunteerStatus with ID "${volunteerStatusId}" not found`);
-      }
-      updatePayload.volunteerStatus = volunteerStatus;
-    }
+    if (!volunteerStatusId) throw new NotFoundException(`VolunteerStatusId is required for update`);
+    const volunteerStatus = await this.volunteerStatusService.findOne(volunteerStatusId);
+    if (!volunteerStatus)
+      throw new NotFoundException(`VolunteerStatus with ID "${volunteerStatusId}" not found`);
+    updatePayload.volunteerStatus = volunteerStatus;
 
     const volunteerHasDepartment =
       await this.volunteerHasDepartmentRepository.preload(updatePayload);
@@ -106,6 +96,8 @@ export class VolunteerHasDepartmentService {
 
   async remove(id: string): Promise<void> {
     const volunteerHasDepartment = await this.findOne(id);
+    if (!volunteerHasDepartment)
+      throw new NotFoundException(`VolunteerHasDepartment with ID "${id}" not found`);
     await this.volunteerHasDepartmentRepository.remove(volunteerHasDepartment);
   }
 }
