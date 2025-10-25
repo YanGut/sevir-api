@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { VolunteerHasDepartmentService } from './volunteer-has-department.service';
 import { CreateVolunteerHasDepartmentDto } from './dto/create-volunteer-has-department.dto';
 import { UpdateVolunteerHasDepartmentDto } from './dto/update-volunteer-has-department.dto';
@@ -18,20 +18,20 @@ export class VolunteerHasDepartmentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.volunteerHasDepartmentService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.volunteerHasDepartmentService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateVolunteerHasDepartmentDto: UpdateVolunteerHasDepartmentDto,
   ) {
-    return this.volunteerHasDepartmentService.update(+id, updateVolunteerHasDepartmentDto);
+    return this.volunteerHasDepartmentService.update(id, updateVolunteerHasDepartmentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.volunteerHasDepartmentService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.volunteerHasDepartmentService.remove(id);
   }
 }
