@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Department } from './entities/department.entity';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
-import { RequestWithUserInfo } from 'src/common/types/request-with-user-info.type';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 
@@ -17,18 +16,15 @@ export class DepartmentService {
     private readonly userService: UserService,
   ) {}
 
-  async create(
-    createDepartmentDto: CreateDepartmentDto,
-    req: RequestWithUserInfo,
-  ): Promise<Department> {
-    if (!req.userId) throw new Error('Unauthorized: User ID not found in request');
-    const user: User | null = await this.userService.findById(req.userId);
-    if (!user) throw new Error('Unauthorized: User not found');
+  async create(createDepartmentDto: CreateDepartmentDto): Promise<Department> {
+    const leader: User | null = await this.userService.findById(createDepartmentDto.leaderId);
 
-    if (user.role.name.toLowerCase() !== 'admin')
-      throw new Error('Unauthorized: Only admins can create departments');
+    if (!leader) throw new NotFoundException('Leader user not found');
 
-    const newDepartment: Department = this.departmentRepository.create(createDepartmentDto);
+    const newDepartment: Department = this.departmentRepository.create({
+      ...createDepartmentDto,
+      user: leader,
+    });
     return await this.departmentRepository.save(newDepartment);
   }
 
@@ -55,96 +51,108 @@ export class DepartmentService {
     });
   }
 
-  async remove(id: string, req: RequestWithUserInfo): Promise<void> {
-    if (!req.userId) throw new Error('Unauthorized: User ID not found in request');
-    const user: User | null = await this.userService.findById(req.userId);
-    if (!user) throw new Error('Unauthorized: User not found');
-
-    if (user.role.name.toLowerCase() !== 'admin')
-      throw new Error('Unauthorized: Only admins can delete departments');
-
+  async remove(id: string): Promise<void> {
     await this.departmentRepository.delete(id);
   }
 
   async seed(): Promise<void> {
+    const adminUsers: User[] = await this.userService.findAdmins();
+    if (adminUsers.length === 0)
+      throw new NotFoundException(
+        'No admin users found. Please create an admin user before seeding departments.',
+      );
+
     const departmentsData: CreateDepartmentDto[] = [
       {
         name: 'Ninho (bebês de 3 meses a 1 ano e 11 meses)',
         active: true,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Arca (crianças de 2 e 3 anos)',
         active: true,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Reino (crianças de 4 e 5 anos)',
         active: true,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Safari (crianças de 6 a 7 anos)',
         active: true,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Connect (crianças de 8 a 11 anos)',
         active: true,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Check in',
         active: false,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Produção',
         active: false,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Estação brincar',
         active: false,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Estação oficinas',
         active: false,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Estação culto',
         active: false,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Eventos',
         active: false,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Boas vindas',
         active: false,
         inRequestQEOne: false,
         inRequestQETwo: false,
+        leaderId: adminUsers[0].id,
       },
       {
         name: 'Farol (departamento para inclusão de crianças atípicas)',
         active: true,
         inRequestQEOne: true,
         inRequestQETwo: true,
+        leaderId: adminUsers[0].id,
       },
     ];
 

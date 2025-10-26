@@ -16,4 +16,8 @@ export class CreateDepartmentDto {
   @IsBoolean()
   @IsNotEmpty()
   inRequestQETwo: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  leaderId: string;
 }
