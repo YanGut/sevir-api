@@ -49,6 +49,16 @@ export class UserService {
     });
   }
 
+  async findAdmins(): Promise<User[]> {
+    const adminRole: UserRole | null = await this.userRoleService.findOneByName('admin');
+    if (!adminRole) return [];
+
+    return this.userRepository.find({
+      where: { role: { id: adminRole.id } },
+      relations: ['role'],
+    });
+  }
+
   async seed(): Promise<void> {
     const adminEmail: string = this.configService.get<string>('admin.email', '');
     const adminPassword: string = this.configService.get<string>('admin.password', '');
