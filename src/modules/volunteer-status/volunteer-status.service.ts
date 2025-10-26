@@ -33,6 +33,15 @@ export class VolunteerStatusService {
     });
   }
 
+  async getDefaultStatus(): Promise<VolunteerStatus> {
+    const defaultStatusName = 'Lider de GC contactado';
+    let status = await this.findOneByName(defaultStatusName);
+    if (!status) {
+      status = await this.create({ name: defaultStatusName });
+    }
+    return status;
+  }
+
   update(id: string, updateVolunteerStatusDto: UpdateVolunteerStatusDto) {
     return this.volunteerStatusRepository.update(id, updateVolunteerStatusDto);
   }
