@@ -29,12 +29,15 @@ export class DepartmentService {
   }
 
   async findAll(): Promise<Department[]> {
-    return await this.departmentRepository.find();
+    return await this.departmentRepository.find({
+      relations: ['user'],
+    });
   }
 
   async findOne(id: string): Promise<Department | null> {
     return await this.departmentRepository.findOne({
       where: { id },
+      relations: ['user'],
     });
   }
 
@@ -159,8 +162,7 @@ export class DepartmentService {
     for (const department of departmentsData) {
       const departmentExists: Department | null = await this.findOneByName(department.name);
       if (departmentExists) continue;
-      const newDepartment: Department = this.departmentRepository.create(department);
-      await this.departmentRepository.save(newDepartment);
+      await this.create(department);
     }
   }
 }
