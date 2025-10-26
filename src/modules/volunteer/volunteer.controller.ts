@@ -19,16 +19,16 @@ export class VolunteerController {
 
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.volunteerService.findOne(+id);
+    return this.volunteerService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id', ParseUUIDPipe) id: string, @Body() updateVolunteerDto: UpdateVolunteerDto) {
-    return this.volunteerService.update(+id, updateVolunteerDto);
+    return this.volunteerService.update(id, updateVolunteerDto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.volunteerService.remove(+id);
+    return this.volunteerService.remove(id);
   }
 }
