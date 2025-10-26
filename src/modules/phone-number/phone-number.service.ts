@@ -13,8 +13,16 @@ export class PhoneNumberService {
   ) {}
 
   async create(createPhoneNumberDto: CreatePhoneNumberDto): Promise<PhoneNumber> {
+    const existingPhoneNumber = await this.findByNumber(createPhoneNumberDto.number);
+    if (existingPhoneNumber) {
+      return existingPhoneNumber;
+    }
     const phoneNumber = this.phoneNumberRepository.create(createPhoneNumberDto);
     return this.phoneNumberRepository.save(phoneNumber);
+  }
+
+  async findByNumber(phoneNumber: string): Promise<PhoneNumber | null> {
+    return await this.phoneNumberRepository.findOne({ where: { number: phoneNumber } });
   }
 
   async findAll(): Promise<PhoneNumber[]> {
