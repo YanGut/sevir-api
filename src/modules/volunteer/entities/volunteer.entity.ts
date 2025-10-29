@@ -13,8 +13,8 @@ export class Volunteer {
   @Column({ name: 'social_media_link', type: 'varchar', length: 255, nullable: false })
   socialMediaLink: string;
 
-  @Column({ name: 'age', type: 'int', nullable: false })
-  age: number;
+  @Column({ name: 'age', type: 'varchar', length: 255, nullable: false })
+  age: string;
 
   @Column({ name: 'response_qe_one', type: 'text', nullable: false })
   responseQEOne: string;

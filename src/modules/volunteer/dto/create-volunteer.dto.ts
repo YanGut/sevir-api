@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateVolunteerDto {
   @IsString()
@@ -9,9 +9,9 @@ export class CreateVolunteerDto {
   @IsNotEmpty()
   socialMediaLink: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  age: number;
+  age: string;
 
   @IsString()
   @IsNotEmpty()
