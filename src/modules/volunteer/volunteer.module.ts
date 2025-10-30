@@ -11,6 +11,7 @@ import { FundamentalLineCourseModule } from '../fundamental-line-course/fundamen
 import { GcParticipationTimeModule } from '../gc-participation-time/gc-participation-time.module';
 import { VolunteerStatusModule } from '../volunteer-status/volunteer-status.module';
 import { VolunteerHasDepartmentModule } from '../volunteer-has-department/volunteer-has-department.module';
+import { BaptizedStatusModule } from '../baptized-status/baptized-status.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { VolunteerHasDepartmentModule } from '../volunteer-has-department/volunt
     GcParticipationTimeModule,
     VolunteerStatusModule,
     VolunteerHasDepartmentModule,
+    BaptizedStatusModule,
   ],
   controllers: [VolunteerController],
   providers: [VolunteerService],

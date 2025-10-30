@@ -24,5 +24,8 @@ export class CreateAboutYouDto {
   @IsString()
   @IsNotEmpty()
   fundamentalLineCourseId: string;
-}
 
+  @IsString()
+  @IsNotEmpty()
+  baptizedStatusId: string;
+}

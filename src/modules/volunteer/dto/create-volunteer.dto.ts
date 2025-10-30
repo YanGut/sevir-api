@@ -52,6 +52,10 @@ export class CreateVolunteerDto {
 
   @IsString()
   @IsNotEmpty()
+  baptizedStatusId: string;
+
+  @IsString()
+  @IsNotEmpty()
   departmentId: string;
 
   @IsString()

@@ -11,6 +11,7 @@ import { GcParticipationTimeService } from '../gc-participation-time/gc-particip
 import { DepartmentService } from '../department/department.service';
 import { VolunteerStatusService } from '../volunteer-status/volunteer-status.service';
 import { VolunteerHasDepartmentService } from '../volunteer-has-department/volunteer-has-department.service';
+import { BaptizedStatusService } from '../baptized-status/baptized-status.service';
 
 import { Volunteer } from './entities/volunteer.entity';
 import { AboutYou } from '../about-you/entities/about-you.entity';
@@ -30,6 +31,7 @@ export class VolunteerService {
     private readonly departmentService: DepartmentService,
     private readonly volunteerStatusService: VolunteerStatusService,
     private readonly volunteerHasDepartmentService: VolunteerHasDepartmentService,
+    private readonly baptizedStatusService: BaptizedStatusService,
     private readonly entityManager: EntityManager,
   ) {}
 
@@ -41,6 +43,7 @@ export class VolunteerService {
         gcParticipationTimeId,
         departmentId,
         volunteerStatusId,
+        baptizedStatusId,
         ...restOfDto
       } = createVolunteerDto;
 
@@ -60,6 +63,10 @@ export class VolunteerService {
           `GcParticipationTime with ID ''${gcParticipationTimeId}'' not found`,
         );
 
+      const baptizedStatus = await this.baptizedStatusService.findOne(baptizedStatusId);
+      if (!baptizedStatus)
+        throw new NotFoundException(`BaptizedStatus with ID ''${baptizedStatusId}'' not found`);
+
       const aboutYouToCreate = new AboutYou();
       aboutYouToCreate.respInGc = restOfDto.respInGC;
       aboutYouToCreate.nameGcLeader = restOfDto.nameGCLeader;
@@ -67,6 +74,7 @@ export class VolunteerService {
       aboutYouToCreate.departmentParticipation = restOfDto.departmentsParticipation;
       aboutYouToCreate.fundamentalLineCourse = fundamentalLineCourse;
       aboutYouToCreate.gcParticipationTime = gcParticipationTime;
+      aboutYouToCreate.baptizedStatus = baptizedStatus;
 
       const aboutYou = await transactionalEntityManager.save(aboutYouToCreate);
 
@@ -109,6 +117,7 @@ export class VolunteerService {
         'aboutYou',
         'aboutYou.gcParticipationTime',
         'aboutYou.fundamentalLineCourse',
+        'aboutYou.baptizedStatus',
       ],
     });
   }
@@ -121,6 +130,7 @@ export class VolunteerService {
         'aboutYou',
         'aboutYou.gcParticipationTime',
         'aboutYou.fundamentalLineCourse',
+        'aboutYou.baptizedStatus',
       ],
     });
     if (!volunteer) {
@@ -138,6 +148,7 @@ export class VolunteerService {
           'aboutYou',
           'aboutYou.gcParticipationTime',
           'aboutYou.fundamentalLineCourse',
+          'aboutYou.baptizedStatus',
         ],
       });
 
@@ -160,6 +171,7 @@ export class VolunteerService {
         nameGCLeader,
         leaderContact,
         departmentsParticipation,
+        baptizedStatusId,
       } = updateVolunteerDto;
 
       if (number) {
@@ -189,6 +201,15 @@ export class VolunteerService {
             `GcParticipationTime with ID ''${gcParticipationTimeId}'' not found`,
           );
         aboutYou.gcParticipationTime = gcParticipationTime;
+      }
+
+      if (baptizedStatusId) {
+        const baptizedStatus = await this.baptizedStatusService.findOne(baptizedStatusId);
+        if (!baptizedStatus)
+          throw new NotFoundException(
+            `BaptizedStatus with ID ''${baptizedStatusId}'' not found`,
+          );
+        aboutYou.baptizedStatus = baptizedStatus;
       }
 
       if (departmentId) {
