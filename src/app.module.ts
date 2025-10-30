@@ -19,6 +19,7 @@ import { PhoneNumberModule } from './modules/phone-number/phone-number.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { VolunteerStatusModule } from './modules/volunteer-status/volunteer-status.module';
 import { SeederModule } from './modules/seeder/seeder.module';
+import { BaptizedStatusModule } from './modules/baptized-status/baptized-status.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { SeederModule } from './modules/seeder/seeder.module';
     VolunteerStatusModule,
     VolunteerModule,
     GcParticipationTimeModule,
+    BaptizedStatusModule,
     AboutYouModule,
     FundamentalLineCourseModule,
     PhoneNumberModule,

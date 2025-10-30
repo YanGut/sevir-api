@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateBaptizedStatusDto } from './dto/create-baptized-status.dto';
 import { UpdateBaptizedStatusDto } from './dto/update-baptized-status.dto';
 import { BaptizedStatus } from './entities/baptized-status.entity';
@@ -13,7 +13,8 @@ export class BaptizedStatusService {
   ) {}
 
   async create(createBaptizedStatusDto: CreateBaptizedStatusDto): Promise<BaptizedStatus> {
-    const baptizedStatus: BaptizedStatus = this.baptizedStatusRepository.create(createBaptizedStatusDto);
+    const baptizedStatus: BaptizedStatus =
+      this.baptizedStatusRepository.create(createBaptizedStatusDto);
     return await this.baptizedStatusRepository.save(baptizedStatus);
   }
 
@@ -23,6 +24,10 @@ export class BaptizedStatusService {
 
   async findOne(id: string): Promise<BaptizedStatus | null> {
     return await this.baptizedStatusRepository.findOne({ where: { id } });
+  }
+
+  async findOneByName(name: string): Promise<BaptizedStatus | null> {
+    return await this.baptizedStatusRepository.findOne({ where: { name } });
   }
 
   async update(
@@ -45,5 +50,21 @@ export class BaptizedStatusService {
 
     await this.baptizedStatusRepository.remove(baptizedStatus);
     return { message: `BaptizedStatus with id: ${id} removed successfully` };
+  }
+
+  async seed(): Promise<void> {
+    const defaultStatuses = [
+      'Sim, sou batizado',
+      'Não, ainda não me batizei',
+      'Estou inscrito para o próximo batismo',
+    ];
+
+    for (const name of defaultStatuses) {
+      const existing = await this.findOneByName(name);
+      if (existing) continue;
+
+      const created = this.baptizedStatusRepository.create({ name });
+      await this.baptizedStatusRepository.save(created);
+    }
   }
 }

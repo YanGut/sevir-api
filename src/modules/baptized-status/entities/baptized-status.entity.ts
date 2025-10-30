@@ -6,7 +6,7 @@ export class BaptizedStatus {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'name', type: 'varchar', length: 255 })
+  @Column({ name: 'name', type: 'varchar', length: 255, unique: true })
   name: string;
 
   @Column({

@@ -7,6 +7,7 @@ import { GcParticipationTimeModule } from '../gc-participation-time/gc-participa
 import { VolunteerStatusModule } from '../volunteer-status/volunteer-status.module';
 import { UserModule } from '../user/user.module';
 import { DepartmentModule } from '../department/department.module';
+import { BaptizedStatusModule } from '../baptized-status/baptized-status.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { DepartmentModule } from '../department/department.module';
     VolunteerStatusModule,
     UserModule,
     DepartmentModule,
+    BaptizedStatusModule,
   ],
   providers: [SeederService],
 })
