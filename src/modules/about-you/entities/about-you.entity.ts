@@ -9,9 +9,6 @@ export class AboutYou {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'resp_in_gc', type: 'text', nullable: false })
-  respInGc: string;
-
   @Column({ name: 'name_gc_leader', type: 'varchar', length: 255, nullable: false })
   nameGcLeader: string;
 

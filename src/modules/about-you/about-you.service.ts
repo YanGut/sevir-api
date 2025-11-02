@@ -105,11 +105,8 @@ export class AboutYouService {
       aboutYou.baptizedStatus = baptizedStatus;
     }
 
-    const { respInGc, nameGcLeader, leaderContact, departmentParticipation } = rest;
+    const { nameGcLeader, leaderContact, departmentParticipation } = rest;
 
-    if (respInGc !== undefined) {
-      aboutYou.respInGc = respInGc;
-    }
     if (nameGcLeader !== undefined) {
       aboutYou.nameGcLeader = nameGcLeader;
     }

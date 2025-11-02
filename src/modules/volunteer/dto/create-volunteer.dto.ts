@@ -14,21 +14,17 @@ export class CreateVolunteerDto {
   age: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   responseQuestionOne: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   responseQuestionTwo: string;
 
   @IsString()
   @IsNotEmpty()
   @Length(1, 24)
   phoneNumber: string;
-
-  @IsString()
-  @IsNotEmpty()
-  respInGC: string;
 
   @IsString()
   @IsNotEmpty()

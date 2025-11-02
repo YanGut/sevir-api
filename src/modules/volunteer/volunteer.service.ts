@@ -68,7 +68,6 @@ export class VolunteerService {
         throw new NotFoundException(`BaptizedStatus with ID ''${baptizedStatusId}'' not found`);
 
       const aboutYouToCreate = new AboutYou();
-      aboutYouToCreate.respInGc = restOfDto.respInGC;
       aboutYouToCreate.nameGcLeader = restOfDto.nameGCLeader;
       aboutYouToCreate.leaderContact = restOfDto.leaderContact;
       aboutYouToCreate.departmentParticipation = restOfDto.departmentsParticipation;
@@ -167,7 +166,6 @@ export class VolunteerService {
         age,
         responseQuestionOne,
         responseQuestionTwo,
-        respInGC,
         nameGCLeader,
         leaderContact,
         departmentsParticipation,
@@ -230,7 +228,6 @@ export class VolunteerService {
       }
 
       const aboutYouUpdateData = {
-        respInGc: respInGC,
         nameGcLeader: nameGCLeader,
         leaderContact,
         departmentParticipation: departmentsParticipation,

@@ -3,10 +3,6 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class CreateAboutYouDto {
   @IsString()
   @IsNotEmpty()
-  respInGc: string;
-
-  @IsString()
-  @IsNotEmpty()
   nameGcLeader: string;
 
   @IsString()
