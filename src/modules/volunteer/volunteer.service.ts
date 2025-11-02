@@ -206,9 +206,7 @@ export class VolunteerService {
       if (baptizedStatusId) {
         const baptizedStatus = await this.baptizedStatusService.findOne(baptizedStatusId);
         if (!baptizedStatus)
-          throw new NotFoundException(
-            `BaptizedStatus with ID ''${baptizedStatusId}'' not found`,
-          );
+          throw new NotFoundException(`BaptizedStatus with ID ''${baptizedStatusId}'' not found`);
         aboutYou.baptizedStatus = baptizedStatus;
       }
 

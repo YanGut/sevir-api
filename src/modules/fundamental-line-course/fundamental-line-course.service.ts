@@ -28,7 +28,11 @@ export class FundamentalLineCourseService {
   }
 
   async findOne(id: string): Promise<FundamentalLineCourse | null> {
-    return await this.fundamentalLineCourseRepository.findOne({ where: { id } });
+    const findedFLC: FundamentalLineCourse | null =
+      await this.fundamentalLineCourseRepository.findOneBy({ id });
+    if (!findedFLC)
+      throw new NotFoundException(`Fundamental Line Course with ID '${id}' not found`);
+    return findedFLC;
   }
 
   async findOneByName(name: string): Promise<FundamentalLineCourse | null> {
