@@ -45,9 +45,9 @@ export class GcParticipationTimeService {
 
   async seed(): Promise<void> {
     const gcParticipationTimeToSeed = [
-      'Sim, sou batizado',
-      'Não, ainda não me batizei',
-      'Estou inscrito para o próximo batismo',
+      'Menos de 3 meses',
+      'Entre 3 meses e 6 meses',
+      'Mais de 7 meses',
     ];
 
     for (const name of gcParticipationTimeToSeed) {
