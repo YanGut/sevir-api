@@ -48,7 +48,16 @@ export class DepartmentService {
   }
 
   async update(id: string, updateDepartmentDto: UpdateDepartmentDto): Promise<Department | null> {
-    await this.departmentRepository.update(id, updateDepartmentDto);
+    const leader: User | null = await this.userService.findById(updateDepartmentDto.leaderId ?? '');
+
+    if (!leader) throw new NotFoundException('Leader user not found');
+
+    const newDepartment: Department = this.departmentRepository.create({
+      ...updateDepartmentDto,
+      user: leader,
+    });
+
+    await this.departmentRepository.update(id, newDepartment);
     return await this.departmentRepository.findOne({
       where: { id },
     });
