@@ -51,6 +51,22 @@ export class VolunteerHasDepartmentService {
     });
   }
 
+  async findByDepartmentId(departmentId: string): Promise<VolunteerHasDepartment[]> {
+    return this.volunteerHasDepartmentRepository.find({
+      where: { department: { id: departmentId } },
+      relations: [
+        'volunteer',
+        'volunteer.phoneNumber',
+        'volunteer.aboutYou',
+        'volunteer.aboutYou.gcParticipationTime',
+        'volunteer.aboutYou.fundamentalLineCourse',
+        'volunteer.aboutYou.baptizedStatus',
+        'department',
+        'volunteerStatus',
+      ],
+    });
+  }
+
   async findOne(id: string): Promise<VolunteerHasDepartment> {
     const volunteerHasDepartment = await this.volunteerHasDepartmentRepository.findOne({
       where: { id },

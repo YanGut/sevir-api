@@ -8,16 +8,21 @@ import {
   Delete,
   UseGuards,
   ParseUUIDPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import { Department } from './entities/department.entity';
+import { VolunteerHasDepartmentService } from '../volunteer-has-department/volunteer-has-department.service';
 
 @Controller('department')
 export class DepartmentController {
-  constructor(private readonly departmentService: DepartmentService) {}
+  constructor(
+    private readonly departmentService: DepartmentService,
+    private readonly volunteerHasDepartmentService: VolunteerHasDepartmentService,
+  ) {}
 
   @Post()
   @UseGuards(AdminGuard)
@@ -33,6 +38,21 @@ export class DepartmentController {
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Department | null> {
     return this.departmentService.findOne(id);
+  }
+
+  @Get(':id/volunteers')
+  async findVolunteersByDepartment(@Param('id', ParseUUIDPipe) id: string) {
+    const department = await this.departmentService.findOne(id);
+    if (!department) {
+      throw new NotFoundException(`Department with ID "${id}" not found`);
+    }
+
+    const assignments = await this.volunteerHasDepartmentService.findByDepartmentId(id);
+    return assignments.map((assignment) => ({
+      volunteer: assignment.volunteer,
+      status: assignment.volunteerStatus,
+      assignedAt: assignment.createdAt,
+    }));
   }
 
   @Patch(':id')

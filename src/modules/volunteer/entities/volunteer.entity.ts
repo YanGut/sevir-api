@@ -1,6 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
 import { AboutYou } from 'src/modules/about-you/entities/about-you.entity';
 import { PhoneNumber } from 'src/modules/phone-number/entities/phone-number.entity';
+import { VolunteerHasDepartment } from 'src/modules/volunteer-has-department/entities/volunteer-has-department.entity';
 
 @Entity('volunteer')
 export class Volunteer {
@@ -32,4 +41,10 @@ export class Volunteer {
   @ManyToOne(() => PhoneNumber, (phoneNumber) => phoneNumber.volunteers)
   @JoinColumn({ name: 'phone_number_id' })
   phoneNumber: PhoneNumber;
+
+  @OneToMany(
+    () => VolunteerHasDepartment,
+    (volunteerHasDepartment) => volunteerHasDepartment.volunteer,
+  )
+  volunteerHasDepartments: VolunteerHasDepartment[];
 }

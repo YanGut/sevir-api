@@ -4,9 +4,10 @@ import { DepartmentController } from './department.controller';
 import { Department } from './entities/department.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '../user/user.module';
+import { VolunteerHasDepartmentModule } from '../volunteer-has-department/volunteer-has-department.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Department]), UserModule],
+  imports: [TypeOrmModule.forFeature([Department]), UserModule, VolunteerHasDepartmentModule],
   controllers: [DepartmentController],
   providers: [DepartmentService],
   exports: [DepartmentService],

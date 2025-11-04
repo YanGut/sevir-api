@@ -117,6 +117,9 @@ export class VolunteerService {
         'aboutYou.gcParticipationTime',
         'aboutYou.fundamentalLineCourse',
         'aboutYou.baptizedStatus',
+        'volunteerHasDepartments',
+        'volunteerHasDepartments.department',
+        'volunteerHasDepartments.volunteerStatus',
       ],
     });
   }
@@ -130,6 +133,9 @@ export class VolunteerService {
         'aboutYou.gcParticipationTime',
         'aboutYou.fundamentalLineCourse',
         'aboutYou.baptizedStatus',
+        'volunteerHasDepartments',
+        'volunteerHasDepartments.department',
+        'volunteerHasDepartments.volunteerStatus',
       ],
     });
     if (!volunteer) {
