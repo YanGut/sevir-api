@@ -6,7 +6,6 @@ export class CreateVolunteerDto {
   name: string;
 
   @IsString()
-  @IsNotEmpty()
   socialMediaLink: string;
 
   @IsString()
@@ -35,7 +34,6 @@ export class CreateVolunteerDto {
   leaderContact: string;
 
   @IsString()
-  @IsNotEmpty()
   departmentsParticipation: string;
 
   @IsString()
