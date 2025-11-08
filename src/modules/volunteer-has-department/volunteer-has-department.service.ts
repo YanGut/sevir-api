@@ -26,15 +26,15 @@ export class VolunteerHasDepartmentService {
   ): Promise<VolunteerHasDepartment> {
     const entityManager = manager || this.volunteerHasDepartmentRepository.manager;
 
-    const existing = await entityManager.findOne(VolunteerHasDepartment, {
-      where: {
-        volunteer: { id: volunteer.id },
-        department: { id: department.id },
-      },
-    });
+    // const existing = await entityManager.findOne(VolunteerHasDepartment, {
+    //   where: {
+    //     volunteer: { id: volunteer.id },
+    //     department: { id: department.id },
+    //   },
+    // });
 
-    if (existing)
-      throw new ConflictException('This volunteer is already assigned to this department.');
+    // if (existing)
+    //   throw new ConflictException('This volunteer is already assigned to this department.');
 
     const newAssignment = entityManager.create(VolunteerHasDepartment, {
       volunteer,
