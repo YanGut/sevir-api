@@ -34,6 +34,9 @@ export class Volunteer {
   @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
+  @Column({ name: 'gender', type: 'varchar', length: 255, nullable: false })
+  gender: string;
+
   @OneToOne(() => AboutYou, (aboutYou) => aboutYou.volunteer)
   @JoinColumn({ name: 'about_you_id' })
   aboutYou: AboutYou;

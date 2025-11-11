@@ -45,9 +45,9 @@ export class GcParticipationTimeService {
 
   async seed(): Promise<void> {
     const gcParticipationTimeToSeed = [
-      'Menos de 3 meses',
-      'Entre 3 meses e 6 meses',
-      'Mais de 7 meses',
+      'Sim, menos de 3 meses',
+      'Sim, mais de 3 meses',
+      'Não faço parte de G.C.',
     ];
 
     for (const name of gcParticipationTimeToSeed) {

@@ -34,6 +34,10 @@ export class CreateVolunteerDto {
   leaderContact: string;
 
   @IsString()
+  @IsNotEmpty()
+  gender: string;
+
+  @IsString()
   departmentsParticipation: string;
 
   @IsString()

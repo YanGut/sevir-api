@@ -85,6 +85,7 @@ export class VolunteerService {
       volunteerToCreate.responseQETwo = restOfDto.responseQuestionTwo;
       volunteerToCreate.phoneNumber = phoneNumber;
       volunteerToCreate.aboutYou = aboutYou;
+      volunteerToCreate.gender = restOfDto.gender;
 
       const volunteer = await transactionalEntityManager.save(volunteerToCreate);
 
